@@ -29,7 +29,7 @@ def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindo
 	def NOAATimeSeries(timeWindow: KeyedTimeWindow[LatLong], NOAAKey: String): TimeSeries[Double] = {
 		import DateHelper._
 		import Weather._
-		val days = DateHelper.diffDays(doubleToDate(timeWindow.startDate), timeWindow.endDateAsJavaDate)
+		val days = DateHelper.diffDays(doubleToDate(timeWindow.startDate), doubleToDate(timeWindow.endDate))
 		TimeSeries.fromDatesAndValues( (0 until days).map(offset => {
 			val currDate = doubleToDate(timeWindow.startDate).plusDays(offset).toDate
 			val w = contentForLatLongDate(timeWindow.key,currDate).toMap
