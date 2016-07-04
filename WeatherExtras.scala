@@ -1,3 +1,9 @@
+import core.common.datastructures.TimeSeries
+import core.common.datastructures.KeyedTimeWindow
+import core.datastructures.LatLong
+import core.datastructures.DateHelper
+import core.Solving.knowledge.weather.Weather
+
 object WeatherExtras {
 def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "TEMP")
 
@@ -22,9 +28,10 @@ def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindo
 
 	def NOAATimeSeries(timeWindow: KeyedTimeWindow[LatLong], NOAAKey: String): TimeSeries[Double] = {
 		import DateHelper._
-		val days = DateHelper.diffDays(timeWindow.startDateAsJavaDate, timeWindow.endDateAsJavaDate)
+		import Weather._
+		val days = DateHelper.diffDays(doubleToDate(timeWindow.startDate), timeWindow.endDateAsJavaDate)
 		TimeSeries.fromDatesAndValues( (0 until days).map(offset => {
-			val currDate = timeWindow.startDateAsJavaDate.plusDays(offset).toDate
+			val currDate = doubleToDate(timeWindow.startDate).plusDays(offset).toDate
 			val w = contentForLatLongDate(timeWindow.key,currDate).toMap
 			(currDate, w.getOrElse(NOAAKey, Double.NaN))
 		}))
