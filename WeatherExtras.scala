@@ -1,4 +1,7 @@
+object WeatherExtras {
 def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "TEMP")
+
+
 	def maxTemperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "MAXTEMP")
 	def minTemperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "MINTEMP")
 	def precipitation(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "PRCP")
@@ -26,3 +29,4 @@ def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindo
 			(currDate, w.getOrElse(NOAAKey, Double.NaN))
 		}))
 	}
+}
