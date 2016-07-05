@@ -1,13 +1,16 @@
 import core.common.datastructures.TimeSeries
 import core.common.datastructures.KeyedTimeWindow
+import core.common.datastructures.LRUCache
 import core.datastructures.LatLong
+import core.datastructures.LatLongDate
 import core.datastructures.DateHelper
 import core.Solving.knowledge.weather.Weather
 
+
 object WeatherExtras {
-def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "TEMP")
+	val lru = LRUCache[LatLongDate, Map[String,Double]](5000)
 
-
+	def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "TEMP")
 	def maxTemperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "MAXTEMP")
 	def minTemperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "MINTEMP")
 	def precipitation(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "PRCP")
@@ -32,7 +35,7 @@ def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindo
 		val days = DateHelper.diffDays(doubleToDate(timeWindow.startDate), doubleToDate(timeWindow.endDate))
 		TimeSeries.fromDatesAndValues( (0 until days).map(offset => {
 			val currDate = doubleToDate(timeWindow.startDate).plusDays(offset).toDate
-			val w = contentForLatLongDate(timeWindow.key,currDate).toMap
+			val w = lru.getOrElse(LatLongDate(timeWindow.key,currDate),contentForLatLongDate(timeWindow.key,currDate).toMap)
 			(currDate, w.getOrElse(NOAAKey, Double.NaN))
 		}))
 	}
