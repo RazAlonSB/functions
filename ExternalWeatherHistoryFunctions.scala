@@ -1,10 +1,10 @@
 import com.sparkbeyond.runtime.util.datastructures.LRUCache
-import com.sparkbeyond.runtime.feature.types._
+import com.sparkbeyond.runtime.feature.types.{LatLong, LatLongDate, TimeSeries, KeyedTimeWindow}
 import com.sparkbeyond.runtime.feature.functions.DateHelper
 import com.sparkbeyond.runtime.externalsources.weather.Weather
 
 object ExternalWeatherHistoryFunctions {
-  	var lru = LRUCache[LatLongDate,Map[String,Double]](20000)
+  	val lru = LRUCache[LatLongDate,Map[String,Double]](20000)
 
 	def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "TEMP")
 	def maxTemperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "MAXTEMP")
