@@ -8,7 +8,7 @@ import core.Solving.knowledge.weather.Weather
 
 
 object WeatherExtras {
-	val lru = LRUCache[LatLongDate, Map[String,Double]](5000)
+	val lru = LRUCache[LatLongDate, Map[String,Double]](20000)
 
 	def temperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "TEMP")
 	def maxTemperature(timeWindow: KeyedTimeWindow[LatLong]) = NOAATimeSeries(timeWindow, "MAXTEMP")
