@@ -33,10 +33,12 @@ object WeatherExtras {
 		import DateHelper._
 		import Weather._
 		val days = DateHelper.diffDays(doubleToDate(timeWindow.startDate), doubleToDate(timeWindow.endDate))
-		TimeSeries.fromDatesAndValues( (0 until days).map(offset => {
+		val result = TimeSeries.fromDatesAndValues( (0 until days).map(offset => {
 			val currDate = doubleToDate(timeWindow.startDate).plusDays(offset).toDate
 			val w = lru.getOrElse(LatLongDate(timeWindow.key,currDate),contentForLatLongDate(timeWindow.key,currDate).toMap)
 			(currDate, w.getOrElse(NOAAKey, Double.NaN))
 		}))
+		if (timeWindow.relativeTime) result.copy(x = result.x.map(_ - result.x.last))
+		else result
 	}
 }
