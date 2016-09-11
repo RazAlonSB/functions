@@ -12,10 +12,10 @@ object MyZeroComplexityFunctions {
 }
 
 	def valuesOfAttributesOfObjectsDistributionInCircle(c: GeoCircle, osm: OpenStreetMapTrait): Histogram[(String, Any)] = new Histogram(valuesOfAttributesOfObjectsInCircle(c,osm))
-
+/*
 	def mapKeyToLookupValue(map: scala.collection.Map[String, Double], lookupTable: MapWrapper[String, Text]): scala.collection.GenSeq[(String	, Double)] = {
 		println("<<<<<<< Hey, I'm here >>>>>>>>>>>")
 		map.toSeq.map { case (key, d) => lookupTable.get(key).getOrElse("").toString -> d }
 	}
-
+*/
 }
