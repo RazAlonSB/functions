@@ -8,9 +8,9 @@ object ZeroComplexityFunctions {
 		case ((l,r), d: Double) => r.toString->d
 	}
 
-	def valuesOfAttributesOfObjectsDistributionInCircle(c: GeoCircle): Histogram[(String, Any)] = new Histogram(valuesOfAttributesOfObjectsInCircle(c))
+	def valuesOfAttributesOfObjectsDistributionInCircle(c: GeoCircle, osm: OpenStreetMapTrait): Histogram[(String, Any)] = new Histogram(valuesOfAttributesOfObjectsInCircle(c,osm))
 
-	def mapKeyToLookupValue[TKey, TDummy](map: scala.collection.Map[TKey, Double], lookupTable: MapWrapper[TKey, TDummy]): GenSeq[(String	, Double)] = {
+	def mapKeyToLookupValue[TKey, TDummy](map: scala.collection.Map[TKey, Double], lookupTable: MapWrapper[TKey, TDummy]): scala.collection.GenSeq[(String	, Double)] = {
 		map.toSeq.map { case (key, d) => lookupTable.get(key).getOrElse("").toString -> d }
 	}
 
